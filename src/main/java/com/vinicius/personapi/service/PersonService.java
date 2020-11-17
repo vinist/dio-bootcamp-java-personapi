@@ -3,12 +3,14 @@ package com.vinicius.personapi.service;
 import com.vinicius.personapi.dto.MessageResponseDTO;
 import com.vinicius.personapi.dto.request.PersonDTO;
 import com.vinicius.personapi.entity.Person;
+import com.vinicius.personapi.exception.PersonNotFoundException;
 import com.vinicius.personapi.mapper.PersonMapper;
 import com.vinicius.personapi.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,5 +36,10 @@ public class PersonService {
     public List<PersonDTO> listAll() {
         List<Person> listPerson = personRepository.findAll();
         return listPerson.stream().map(personMapper::toDto).collect(Collectors.toList());
+    }
+    
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+        return personMapper.toDto(person);
     }
 }

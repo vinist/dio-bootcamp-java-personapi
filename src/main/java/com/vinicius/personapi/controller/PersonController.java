@@ -3,6 +3,7 @@ package com.vinicius.personapi.controller;
 import com.vinicius.personapi.dto.MessageResponseDTO;
 import com.vinicius.personapi.dto.request.PersonDTO;
 import com.vinicius.personapi.entity.Person;
+import com.vinicius.personapi.exception.PersonNotFoundException;
 import com.vinicius.personapi.service.PersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,4 +30,10 @@ public class PersonController {
     public List<PersonDTO> listAll() {
         return personService.listAll();
     }
+    
+    @GetMapping("/{id}")
+    public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundException {
+        return personService.findById(id);
+    }
 }
+
